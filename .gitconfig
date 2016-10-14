@@ -1,0 +1,73 @@
+[alias]
+	l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+	la = "!git config -l | grep alias | cut -c 7-"
+	s = status
+	d = difftool
+	a = add
+	c = commit
+	co = checkout
+	cob = checkout -b 
+	p = pull
+	pr = pull --rebase
+	f = flow
+	save = !git add -A && git commit --no-verify -m 'SAVEPOINT'
+	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+	pre = !git d && git gui
+	wip = commit -am "WIP" 
+	undo = reset HEAD~1 --mixed
+	amend = commit -a --amend
+	wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+	cleanup = !git fetch --all && git remote prune origin && git gc
+	cleanup-remove-all = !git remote prune origin && git gc && git clean -df && git stash clear
+	show-patch = format-patch --stdout -1
+  graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+  changelog = !git log `git describe --tags --abbrev=0 HEAD^`..HEAD --oneline
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore_global
+
+[color]
+	ui = true
+	diff = true
+	grep = true
+	branch = true
+	showbranch = true
+	status = true
+
+[color "diff"]
+	plain = normal dim
+	meta = yellow dim
+	frag = blue bold
+	old = magenta
+	new = cyan
+	whitespace = red reverse
+
+[color "status"]
+	header = normal dim
+	added = yellow
+	untracked = magenta
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = red
+
+[push]
+	default = simple
+
+[difftool]
+	prompt = false
+[merge]
+	tool = meld
+  conflictstyle = diff3
+	summary = true
+	keepbackup = false
+[diff]
+	tool = meld
+  guitool = meld
+[cola]
+	fontdiff = DejaVu Sans Mono,11,-1,5,50,0,0,0,0,0
+[init]
+	templatedir = ~/.git-utils
